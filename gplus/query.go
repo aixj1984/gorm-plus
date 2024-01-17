@@ -49,6 +49,7 @@ func (q *QueryCond[T]) getSQLSegment() string {
 // NewQuery 构建查询条件
 func NewQuery[T any]() (*QueryCond[T], *T) {
 	q := &QueryCond[T]{}
+
 	modelTypeStr := reflect.TypeOf((*T)(nil)).Elem().String()
 	if model, ok := modelInstanceCache.Load(modelTypeStr); ok {
 		m, isReal := model.(*T)
@@ -97,115 +98,115 @@ func NewQueryModel[T any, R any]() (*QueryCond[T], *T, *R) {
 
 // Eq 等于 =
 func (q *QueryCond[T]) Eq(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Eq, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Eq, val)...)
 	return q
 }
 
 // Ne 不等于 !=
 func (q *QueryCond[T]) Ne(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Ne, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Ne, val)...)
 	return q
 }
 
 // Gt 大于 >
 func (q *QueryCond[T]) Gt(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Gt, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Gt, val)...)
 	return q
 }
 
 // Ge 大于等于 >=
 func (q *QueryCond[T]) Ge(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Ge, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Ge, val)...)
 	return q
 }
 
 // Lt 小于 <
 func (q *QueryCond[T]) Lt(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Lt, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Lt, val)...)
 	return q
 }
 
 // Le 小于等于 <=
 func (q *QueryCond[T]) Le(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Le, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Le, val)...)
 	return q
 }
 
 // Like 模糊 LIKE '%值%'
 func (q *QueryCond[T]) Like(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Like, "%"+s+"%")...)
+	q.addExpression(q.buildSQLSegment(column, constants.Like, "%"+s+"%")...)
 	return q
 }
 
 // NotLike 非模糊 NOT LIKE '%值%'
 func (q *QueryCond[T]) NotLike(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Not+" "+constants.Like, "%"+s+"%")...)
+	q.addExpression(q.buildSQLSegment(column, constants.Not+" "+constants.Like, "%"+s+"%")...)
 	return q
 }
 
 // LikeLeft 左模糊 LIKE '%值'
 func (q *QueryCond[T]) LikeLeft(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Like, "%"+s)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Like, "%"+s)...)
 	return q
 }
 
 // NotLikeLeft 非左模糊 NOT LIKE '%值'
 func (q *QueryCond[T]) NotLikeLeft(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Not+" "+constants.Like, "%"+s)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Not+" "+constants.Like, "%"+s)...)
 	return q
 }
 
 // LikeRight 右模糊 LIKE '值%'
 func (q *QueryCond[T]) LikeRight(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Like, s+"%")...)
+	q.addExpression(q.buildSQLSegment(column, constants.Like, s+"%")...)
 	return q
 }
 
 // NotLikeRight 非右模糊 NOT LIKE '值%'
 func (q *QueryCond[T]) NotLikeRight(column any, val any) *QueryCond[T] {
 	s := fmt.Sprintf("%v", val)
-	q.addExpression(q.buildSqlSegment(column, constants.Not+" "+constants.Like, s+"%")...)
+	q.addExpression(q.buildSQLSegment(column, constants.Not+" "+constants.Like, s+"%")...)
 	return q
 }
 
 // IsNull 是否为空 字段 IS NULL
 func (q *QueryCond[T]) IsNull(column any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.IsNull, nil)...)
+	q.addExpression(q.buildSQLSegment(column, constants.IsNull, nil)...)
 	return q
 }
 
 // IsNotNull 是否非空 字段 IS NOT NULL
 func (q *QueryCond[T]) IsNotNull(column any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.IsNotNull, nil)...)
+	q.addExpression(q.buildSQLSegment(column, constants.IsNotNull, nil)...)
 	return q
 }
 
 // In 字段 IN (值1, 值2, ...)
 func (q *QueryCond[T]) In(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.In, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.In, val)...)
 	return q
 }
 
 // NotIn 字段 NOT IN (值1, 值2, ...)
 func (q *QueryCond[T]) NotIn(column any, val any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Not+" "+constants.In, val)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Not+" "+constants.In, val)...)
 	return q
 }
 
 // Between BETWEEN 值1 AND 值2
 func (q *QueryCond[T]) Between(column any, start, end any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Between, start, constants.And, end)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Between, start, constants.And, end)...)
 	return q
 }
 
 // NotBetween NOT BETWEEN 值1 AND 值2
 func (q *QueryCond[T]) NotBetween(column any, start, end any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.Not+" "+constants.Between, start, constants.And, end)...)
+	q.addExpression(q.buildSQLSegment(column, constants.Not+" "+constants.Between, start, constants.And, end)...)
 	return q
 }
 
@@ -222,9 +223,9 @@ func (q *QueryCond[T]) Group(columns ...any) *QueryCond[T] {
 	for _, v := range columns {
 		columnName := getColumnName(v)
 		if q.groupBuilder.Len() > 0 {
-			q.groupBuilder.WriteString(constants.Comma) //nolint: errcheck
+			q.groupBuilder.WriteString(constants.Comma) //nolint
 		}
-		q.groupBuilder.WriteString(columnName) //nolint: errcheck
+		q.groupBuilder.WriteString(columnName) //nolint
 	}
 	return q
 }
@@ -253,7 +254,7 @@ func (q *QueryCond[T]) OrderByAsc(columns ...any) *QueryCond[T] {
 
 // Having HAVING SQl语句
 func (q *QueryCond[T]) Having(having string, args ...any) *QueryCond[T] {
-	q.havingBuilder.WriteString(having)
+	q.havingBuilder.WriteString(having) //nolint
 	if len(args) == 1 {
 		// 兼容function方法中in返回切片类型数据
 		if anies, ok := args[0].([]any); ok {
@@ -725,7 +726,7 @@ func isLastNotAndOr(lastKeyword *sqlKeyword, isKeyword bool, expressions []any) 
 	return isKeyword && lastKeyword.keyword != constants.And && lastKeyword.keyword != constants.Or && len(expressions) > 0
 }
 
-func (q *QueryCond[T]) buildSqlSegment(column any, condType string, values ...any) []SQLSegment {
+func (q *QueryCond[T]) buildSQLSegment(column any, condType string, values ...any) []SQLSegment {
 	var sqlSegments []SQLSegment
 	sqlSegments = append(sqlSegments, &columnPointer{column: column}, &sqlKeyword{keyword: condType})
 	for _, val := range values {
@@ -740,9 +741,9 @@ func (q *QueryCond[T]) buildOrder(orderType string, columns ...string) {
 		if q.orderBuilder.Len() > 0 {
 			q.orderBuilder.WriteString(constants.Comma) //nolint
 		}
-		q.orderBuilder.WriteString(v)   //nolint
-		q.orderBuilder.WriteString(" ") //nolint
-		q.orderBuilder.WriteString(orderType)
+		q.orderBuilder.WriteString(v)         //nolint
+		q.orderBuilder.WriteString(" ")       //nolint
+		q.orderBuilder.WriteString(orderType) //nolint
 	}
 }
 
