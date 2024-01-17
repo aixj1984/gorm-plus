@@ -1,3 +1,4 @@
+// Package constants 常量值定义
 /*
  * Licensed to the AcmeStack under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for
@@ -14,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package constants
 
 const (
-	Comma              = ","
-	LeftBracket        = "("
-	RightBracket       = ")"
-	DefaultPrimaryName = "id"
+	Comma              = ","    // nolint
+	LeftBracket        = "("    // nolint
+	RightBracket       = ")"    // nolint
+	DefaultPrimaryName = "id"   // nolint
+	NullString         = "null" // nolint
 )

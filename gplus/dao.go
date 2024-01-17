@@ -36,10 +36,12 @@ var (
 	defaultBatchSize = 1000
 )
 
+// Init 初始化DB
 func Init(db *gorm.DB) {
 	globalDb = db
 }
 
+// Page 分页查询结构
 type Page[T any] struct {
 	Current    int   `json:"page"`     // 页码
 	Size       int   `json:"pageSize"` // 每页大小
@@ -49,20 +51,25 @@ type Page[T any] struct {
 	RecordsMap []T   `json:"listMap"`
 }
 
+// Dao 通用dao层
 type Dao[T any] struct{}
 
+// NewQuery 构造一个查询
 func (dao Dao[T]) NewQuery() (*QueryCond[T], *T) {
 	return NewQuery[T]()
 }
 
+// NewPage 构造一个分页查询
 func NewPage[T any](current, size int) *Page[T] {
 	return &Page[T]{Current: current, Size: size}
 }
 
+// Comparable 可比较的接口
 type Comparable interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~float32 | ~float64 | time.Time
 }
 
+// StreamingPage 流式分页查询结构
 type StreamingPage[T any, V Comparable] struct {
 	ColumnName any   `json:"columnName"` // 进行分页的列字段名称
 	StartValue V     `json:"startValue"` // 分页起始值
@@ -73,6 +80,7 @@ type StreamingPage[T any, V Comparable] struct {
 	RecordsMap []T   `json:"recordsMap"` // 查询记录Map
 }
 
+// NewStreamingPage 流式分页查询
 func NewStreamingPage[T any, V Comparable](columnName any, startValue V, limit int) *StreamingPage[T, V] {
 	return &StreamingPage[T, V]{
 		ColumnName: columnName,
@@ -233,26 +241,26 @@ func PluckDistinct[T any, R any](column string, q *QueryCond[T], opts ...OptionF
 	return results, resultDb
 }
 
-// SelectListBySql 按任意SQL执行,指定返回类型数组
-func SelectListBySql[R any](querySql string, opts ...OptionFunc) ([]*R, *gorm.DB) {
+// SelectListBySQL 按任意SQL执行,指定返回类型数组
+func SelectListBySQL[R any](querySQL string, opts ...OptionFunc) ([]*R, *gorm.DB) {
 	resultDb := getDb(opts...)
 	var results []*R
-	resultDb = resultDb.Raw(querySql).Scan(&results)
+	resultDb = resultDb.Raw(querySQL).Scan(&results)
 	return results, resultDb
 }
 
-// SelectOneBySql 根据原始的SQL语句，取一个
-func SelectOneBySql[R any](countSql string, opts ...OptionFunc) (R, *gorm.DB) {
+// SelectOneBySQL 根据原始的SQL语句，取一个
+func SelectOneBySQL[R any](countSQL string, opts ...OptionFunc) (R, *gorm.DB) {
 	resultDb := getDb(opts...)
 	var result R
-	resultDb = resultDb.Raw(countSql).Scan(&result)
+	resultDb = resultDb.Raw(countSQL).Scan(&result)
 	return result, resultDb
 }
 
-// ExcSql 按任意SQL执行,返回影响的行
-func ExcSql(querySql string, opts ...OptionFunc) *gorm.DB {
+// ExcSQL 按任意SQL执行,返回影响的行
+func ExcSQL(querySQL string, opts ...OptionFunc) *gorm.DB {
 	resultDb := getDb(opts...)
-	resultDb = resultDb.Exec(querySql)
+	resultDb = resultDb.Exec(querySQL)
 	return resultDb
 }
 
@@ -460,7 +468,7 @@ func buildCondition[T any](q *QueryCond[T], opts ...OptionFunc) *gorm.DB {
 		expressions := q.queryExpressions
 		if len(expressions) > 0 {
 			var sqlBuilder strings.Builder
-			q.queryArgs = buildSqlAndArgs[T](expressions, &sqlBuilder, q.queryArgs)
+			q.queryArgs = buildSQLAndArgs[T](expressions, &sqlBuilder, q.queryArgs)
 			resultDb.Where(sqlBuilder.String(), q.queryArgs...)
 		}
 
@@ -487,21 +495,21 @@ func buildCondition[T any](q *QueryCond[T], opts ...OptionFunc) *gorm.DB {
 	return resultDb
 }
 
-func buildSqlAndArgs[T any](expressions []any, sqlBuilder *strings.Builder, queryArgs []any) []any {
+func buildSQLAndArgs[T any](expressions []any, sqlBuilder *strings.Builder, queryArgs []any) []any {
 	for _, v := range expressions {
 		// 判断是否是columnValue类型
 		switch segment := v.(type) {
 		case *columnPointer:
-			sqlBuilder.WriteString(segment.getSqlSegment() + " ")
+			sqlBuilder.WriteString(segment.getSQLSegment() + " ") //nolint: errcheck
 		case *sqlKeyword:
-			sqlBuilder.WriteString(segment.getSqlSegment() + " ")
+			sqlBuilder.WriteString(segment.getSQLSegment() + " ") //nolint: errcheck
 		case *columnValue:
 			if segment.value == constants.And {
-				sqlBuilder.WriteString(segment.value.(string) + " ")
+				sqlBuilder.WriteString(segment.value.(string) + " ") //nolint: errcheck
 				continue
 			}
 			if segment.value != nil { // 条件可以给空字符串
-				sqlBuilder.WriteString("? ") //nolint
+				sqlBuilder.WriteString("? ") //nolint: errcheck
 				queryArgs = append(queryArgs, segment.value)
 			}
 		case *QueryCond[T]:
@@ -509,10 +517,10 @@ func buildSqlAndArgs[T any](expressions []any, sqlBuilder *strings.Builder, quer
 			if len(segment.queryExpressions) == 0 {
 				continue
 			}
-			sqlBuilder.WriteString(constants.LeftBracket + " ")
+			sqlBuilder.WriteString(constants.LeftBracket + " ") //nolint: errcheck
 			// 递归处理条件
-			queryArgs = buildSqlAndArgs[T](segment.queryExpressions, sqlBuilder, queryArgs)
-			sqlBuilder.WriteString(constants.RightBracket + " ")
+			queryArgs = buildSQLAndArgs[T](segment.queryExpressions, sqlBuilder, queryArgs)
+			sqlBuilder.WriteString(constants.RightBracket + " ") //nolint: errcheck
 		}
 	}
 	return queryArgs

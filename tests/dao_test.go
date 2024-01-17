@@ -694,7 +694,7 @@ func TestBySql(t *testing.T) {
 		Num int
 	}
 
-	records, db := gplus.SelectListBySql[UserPlus]("select * , 1 as num from Users")
+	records, db := gplus.SelectListBySQL[UserPlus]("select * , 1 as num from Users")
 	if db.Error != nil {
 		t.Errorf("errors happened when SelectCount : %v", db.Error)
 	}
@@ -709,7 +709,7 @@ func TestBySql(t *testing.T) {
 		t.Errorf("count expects: %v, got %v", len(records), 0)
 	}
 
-	db = gplus.ExcSql("delete from Users")
+	db = gplus.ExcSQL("delete from Users")
 
 	if db.Error != nil {
 		t.Errorf("errors happened when SelectCount : %v", db.Error)

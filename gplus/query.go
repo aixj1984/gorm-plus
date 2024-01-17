@@ -42,7 +42,7 @@ type QueryCond[T any] struct {
 	columnTypeMap    map[string]reflect.Type
 }
 
-func (q *QueryCond[T]) getSqlSegment() string {
+func (q *QueryCond[T]) getSQLSegment() string {
 	return ""
 }
 
@@ -222,9 +222,9 @@ func (q *QueryCond[T]) Group(columns ...any) *QueryCond[T] {
 	for _, v := range columns {
 		columnName := getColumnName(v)
 		if q.groupBuilder.Len() > 0 {
-			q.groupBuilder.WriteString(constants.Comma)
+			q.groupBuilder.WriteString(constants.Comma) //nolint: errcheck
 		}
-		q.groupBuilder.WriteString(columnName)
+		q.groupBuilder.WriteString(columnName) //nolint: errcheck
 	}
 	return q
 }
@@ -651,7 +651,7 @@ func (q *QueryCond[T]) OrInCond(cond bool, column any, val any) *QueryCond[T] {
 	return q
 }
 
-func (q *QueryCond[T]) addExpression(sqlSegments ...SqlSegment) {
+func (q *QueryCond[T]) addExpression(sqlSegments ...SQLSegment) {
 	if len(sqlSegments) == 1 {
 		q.handleSingle(sqlSegments[0])
 		return
@@ -680,7 +680,7 @@ func (q *QueryCond[T]) addAndCondIfNeed() {
 	}
 }
 
-func (q *QueryCond[T]) handleSingle(sqlSegment SqlSegment) {
+func (q *QueryCond[T]) handleSingle(sqlSegment SQLSegment) {
 	// 如何是第一次设置，则不需要添加and(),or(),防止用户首次设置条件错误
 	if len(q.queryExpressions) == 0 {
 		return
@@ -696,7 +696,7 @@ func (q *QueryCond[T]) handleSingle(sqlSegment SqlSegment) {
 	}
 }
 
-func (q *QueryCond[T]) handelRepeat(sqlSegment SqlSegment) bool {
+func (q *QueryCond[T]) handelRepeat(sqlSegment SQLSegment) bool {
 	currentKeyword, isCurrentKeyword := sqlSegment.(*sqlKeyword)
 	lastKeyword, isLastKeyword := q.last.(*sqlKeyword)
 	if isCurrentKeyword && isLastKeyword {
@@ -725,8 +725,8 @@ func isLastNotAndOr(lastKeyword *sqlKeyword, isKeyword bool, expressions []any) 
 	return isKeyword && lastKeyword.keyword != constants.And && lastKeyword.keyword != constants.Or && len(expressions) > 0
 }
 
-func (q *QueryCond[T]) buildSqlSegment(column any, condType string, values ...any) []SqlSegment {
-	var sqlSegments []SqlSegment
+func (q *QueryCond[T]) buildSqlSegment(column any, condType string, values ...any) []SQLSegment {
+	var sqlSegments []SQLSegment
 	sqlSegments = append(sqlSegments, &columnPointer{column: column}, &sqlKeyword{keyword: condType})
 	for _, val := range values {
 		cv := columnValue{value: val}
@@ -738,15 +738,15 @@ func (q *QueryCond[T]) buildSqlSegment(column any, condType string, values ...an
 func (q *QueryCond[T]) buildOrder(orderType string, columns ...string) {
 	for _, v := range columns {
 		if q.orderBuilder.Len() > 0 {
-			q.orderBuilder.WriteString(constants.Comma)
+			q.orderBuilder.WriteString(constants.Comma) //nolint
 		}
-		q.orderBuilder.WriteString(v)
-		q.orderBuilder.WriteString(" ")
+		q.orderBuilder.WriteString(v)   //nolint
+		q.orderBuilder.WriteString(" ") //nolint
 		q.orderBuilder.WriteString(orderType)
 	}
 }
 
-// 执行增加AND条件
+// AddAndStrCond 执行增加AND条件
 func (q *QueryCond[T]) AddAndStrCond(cond string) *QueryCond[T] {
 	if len(q.queryExpressions) > 0 {
 		sk := sqlKeyword{keyword: constants.And}
@@ -758,7 +758,7 @@ func (q *QueryCond[T]) AddAndStrCond(cond string) *QueryCond[T] {
 	return q
 }
 
-// 执行增加OR条件
+// AddOrStrCond 执行增加OR条件
 func (q *QueryCond[T]) AddOrStrCond(cond string) *QueryCond[T] {
 	if len(q.queryExpressions) > 0 {
 		sk := sqlKeyword{keyword: constants.Or}
@@ -770,7 +770,7 @@ func (q *QueryCond[T]) AddOrStrCond(cond string) *QueryCond[T] {
 	return q
 }
 
-// 根据条件，执行方法
+// Case 根据条件，执行方法
 func (q *QueryCond[T]) Case(isTrue bool, handleFunc func()) *QueryCond[T] {
 	if isTrue {
 		handleFunc()
@@ -778,7 +778,7 @@ func (q *QueryCond[T]) Case(isTrue bool, handleFunc func()) *QueryCond[T] {
 	return q
 }
 
-// 重置查询条件
+// Reset 重置查询条件
 func (q *QueryCond[T]) Reset() *QueryCond[T] {
 	q.selectColumns = q.selectColumns[:0]
 	q.omitColumns = q.omitColumns[:0]

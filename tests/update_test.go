@@ -137,7 +137,7 @@ func checkUpdateSql(t *testing.T, expect string) *gorm.DB {
 	sessionDb := gormDb.Session(&gorm.Session{DryRun: true})
 	callback := sessionDb.Callback().Update().After("gorm:update")
 	callback.Register("print_sql", func(db *gorm.DB) {
-		sql := buildSql(db)
+		sql := buildSQL(db)
 		sql = strings.TrimSpace(sql)
 		if sql != expect {
 			t.Errorf("errors happened  when update expect: %v, got %v", expect, sql)

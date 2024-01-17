@@ -18,26 +18,26 @@
 package constants
 
 const (
-	And       = "AND"
-	Or        = "OR"
-	In        = "IN"
-	Not       = "NOT"
-	Like      = "LIKE"
-	Eq        = "="
-	Ne        = "<>"
-	Gt        = ">"
-	Ge        = ">="
-	Lt        = "<"
-	Le        = "<="
-	IsNull    = "IS NULL"
-	IsNotNull = "IS NOT NULL"
-	Between   = "BETWEEN"
-	Desc      = "DESC"
-	Asc       = "ASC"
-	As        = "AS"
-	SUM       = "SUM"
-	AVG       = "AVG"
-	MAX       = "MAX"
-	MIN       = "MIN"
-	COUNT     = "COUNT"
+	And       = "AND"         // nolint
+	Or        = "OR"          // nolint
+	In        = "IN"          // nolint
+	Not       = "NOT"         // nolint
+	Like      = "LIKE"        // nolint
+	Eq        = "="           // nolint
+	Ne        = "<>"          // nolint
+	Gt        = ">"           // nolint
+	Ge        = ">="          // nolint
+	Lt        = "<"           // nolint
+	Le        = "<="          // nolint
+	IsNull    = "IS NULL"     // nolint
+	IsNotNull = "IS NOT NULL" // nolint
+	Between   = "BETWEEN"     // nolint
+	Desc      = "DESC"        // nolint
+	Asc       = "ASC"         // nolint
+	As        = "AS"          // nolint
+	SUM       = "SUM"         // nolint
+	AVG       = "AVG"         // nolint
+	MAX       = "MAX"         // nolint
+	MIN       = "MIN"         // nolint
+	COUNT     = "COUNT"       // nolint
 )

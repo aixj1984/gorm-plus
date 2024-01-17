@@ -1,0 +1,305 @@
+linters:
+  # Disable all linters.
+  # Default: false
+  disable-all: false
+  # Enable specific linter
+  # https://golangci-lint.run/usage/linters/#enabled-by-default
+  enable:
+    - asasalint # Check for pass []any as any in variadic func(...any). 检查是否在可变参数函数 func(...any) 中传递了 []any 作为 any 参数。
+    - gofmt # Gofmt checks whether code was gofmt-ed. By default this tool runs with -s option to check for code simplification.
+    - gofumpt # Gofumpt checks whether code was gofumpt-ed.  Gofumpt检查代码是否已被gofumpt处理过
+    - bodyclose # Checks whether HTTP response body is closed successfully. 检查HTTP响应体是否已成功关闭。
+    - dupl # Tool for code clone detection. 用于代码克隆检测的工具。
+    - errname # Checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error. 检查哨兵错误是否以Err为前缀，错误类型是否以Error为后缀。
+    - errorlint # Errorlint is a linter for that can be used to find code that will cause problems with the error wrapping scheme introduced in Go 1.13. Errorlint是一个静态代码分析工具，可以用来查找会在Go 1.13引入的错误包装方案中引起问题的代码。
+    - errcheck # Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases. Errcheck是一个用于检查Go程序中未处理错误的程序。在某些情况下，这些未处理的错误可能是关键性的错误。
+    - funlen # Tool for detection of long functions.  检查函数长度
+    - gosimple # Linter for Go source code that specializes in simplifying code. 专门用于简化Go代码的静态代码分析工具。
+    - gocyclo # Computes and checks the cyclomatic complexity of functions. 计算并检查函数的圈复杂度
+    - goconst # Finds repeated strings that could be replaced by a constant.  找到可以被常量替换的重复字符串。
+    - gosec # Inspects source code for security problems.  检查源代码中的安全问题
+    - govet # Vet examines Go source code and reports suspicious constructs, such as Printf calls whose arguments do not align with the format string. Vet检查Go源代码并报告可疑的构造，例如Printf调用的参数与格式字符串不对齐。
+    - ineffassign # Detects when assignments to existing variables are not used. 检测对现有变量的赋值是否未被使用。
+    - staticcheck # Staticcheck is a go vet on steroids, applying a ton of static analysis checks. Staticcheck就像是强化版的go vet，它可以应用大量的静态分析检查。
+    - typecheck # Like the front-end of a Go compiler, parses and type-checks Go code.  像Go编译器的前端一样，解析并对Go代码进行类型检查。
+    - unused # Checks Go code for unused constants, variables, functions and types.  检查Go代码中未使用的常量、变量、函数和类型。
+    - unconvert # Remove unnecessary type conversions. 移除不必要的类型转换。
+    - usestdlibvars # A linter that detect the possibility to use variables/constants from the Go standard library. 一个可以检测出可能使用Go标准库中的变量/常量的静态代码分析工具。
+    - varnamelen # Checks that the length of a variable's name matches its scope.  检查变量名称的长度是否与其作用域匹配。
+    - whitespace # Whitespace is a linter that checks for unnecessary newlines at the start and end of functions, if, for, etc. Whitespace是一个静态代码分析工具，用于检查函数、if、for等语句开始和结束处是否有不必要的空行。
+    - revive # Carry out the stylistic conventions put forth in Effective Go and CodeReviewComments. 执行《Effective Go》和《CodeReviewComments》中提出的风格约定
+
+  # Enable all available linters.
+  # Default: false
+  enable-all: false
+  disable:
+    #- asasalint
+    - gci
+    - asciicheck
+    - bidichk
+    - depguard
+    - containedctx
+    - contextcheck
+    - cyclop
+    - decorder
+    - dogsled
+    #- dupl
+    - dupword
+    - durationcheck
+    - errchkjson
+    - execinquery
+    - exhaustive
+    - exhaustivestruct
+    - exhaustruct
+    - exportloopref
+    - forbidigo
+    - forcetypeassert
+    #- funlen
+    - ginkgolinter
+    - gocheckcompilerdirectives
+    - gochecknoglobals
+    - gochecknoinits
+    - gochecksumtype
+    - gocognit
+    #- goconst
+    - gocritic
+    #- gocyclo
+    - godot
+    - godox
+    - goerr113
+    - goheader
+    - goimports
+    #- golint
+    - gomnd
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    #- gosec
+    #- gosimple
+    - gosmopolitan
+    #- govet
+    - grouper
+    - ifshort
+    - importas
+    - inamedparam
+    #- ineffassign
+    - interfacebloat
+    - interfacer
+    - ireturn
+    - lll
+    - loggercheck
+    - maintidx
+    - makezero
+    - maligned
+    - mirror
+    - misspell
+    - musttag
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnil
+    - nlreturn
+    - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosnakecase
+    - nosprintfhostport
+    - paralleltest
+    - perfsprint
+    - prealloc
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    #- revive
+    - rowserrcheck
+    #- scopelint
+    - sloglint
+    - sqlclosecheck
+    #- staticcheck
+    #- structcheck
+    - stylecheck
+    - tagalign
+    - tagliatelle
+    - tenv
+    - testableexamples
+    - testifylint
+    - testpackage
+    - thelper
+    - tparallel
+    #- typecheck
+    #- unconvert
+    - unparam
+    #- unused
+    #- usestdlibvars
+    #- varcheck
+    #- varnamelen
+    - wastedassign
+    #- whitespace
+    - wrapcheck
+    - wsl
+    - zerologlint
+
+  # Enable presets.
+  # https://golangci-lint.run/usage/linters
+  presets:
+    - bugs
+    - comment
+    - error
+    - format
+    - metalinter
+    - module
+    - performance
+    - sql
+    - style
+    - unused
+    - test
+    - import
+    - complexity
+  # Run only fast linters from enabled linters set (first run won't be fast)
+  # Default: false
+  fast: true
+output:
+  format: colored-line-number # colored-line-number|line-number|json|colored-tab|tab|checkstyle|code-climate|junit-xml|github-actions|teamcity
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: true
+  path-prefix: ""
+  sort-results: true
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  gocyclo:
+    min-complexity: 20
+  dupl:
+    threshold: 150
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  errcheck:
+    # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
+    # Such cases aren't reported by default.
+    # Default: false
+    check-type-assertions: false
+    # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`.
+    # Such cases aren't reported by default.
+    # Default: false
+    check-blank: true
+    # DEPRECATED comma-separated list of pairs of the form pkg:regex
+    #
+    # the regex is used to ignore names within pkg. (default "fmt:.*").
+    # see https://github.com/kisielk/errcheck#the-deprecated-method for details
+    ignore: fmt:.*,io/ioutil:^Read.*
+    # To disable the errcheck built-in exclude list.
+    # See `-excludeonly` option in https://github.com/kisielk/errcheck#excluding-functions for details.
+    # Default: false
+    disable-default-exclusions: true
+    # DEPRECATED use exclude-functions instead.
+    #
+    # Path to a file containing a list of functions to exclude from checking.
+    # See https://github.com/kisielk/errcheck#excluding-functions for details.
+    exclude:
+    # List of functions to exclude from checking, where each entry is a single function to exclude.
+    # See https://github.com/kisielk/errcheck#excluding-functions for details.
+    exclude-functions:
+      - io/ioutil.ReadFile
+      - io.Copy(*bytes.Buffer)
+      - io.Copy(os.Stdout)
+
+  varnamelen:
+    # The longest distance, in source lines, that is being considered a "small scope." (defaults to 5)
+    # Variables used in at most this many lines will be ignored.
+    max-distance: 5
+    # The minimum length of a variable's name that is considered "long." (defaults to 3)
+    # Variable names that are at least this long will be ignored.
+    min-name-length: 1
+    # Check method receivers. (defaults to false)
+    check-receiver: false
+    # Check named return values. (defaults to false)
+    check-return: false
+    # Check type parameters. (defaults to false)
+    check-type-param: false
+    # Ignore "ok" variables that hold the bool return value of a type assertion. (defaults to false)
+    ignore-type-assert-ok: false
+    # Ignore "ok" variables that hold the bool return value of a map index. (defaults to false)
+    ignore-map-index-ok: false
+    # Ignore "ok" variables that hold the bool return value of a channel receive. (defaults to false)
+    ignore-chan-recv-ok: false
+    # Optional list of variable names that should be ignored completely. (defaults to empty list)
+    ignore-names:
+      - err
+      - c
+
+    # Optional list of variable declarations that should be ignored completely. (defaults to empty list)
+    # Entries must be in one of the following forms (see below for examples):
+    # - for variables, parameters, named return values, method receivers, or type parameters:
+    #   <name> <type>  (<type> can also be a pointer/slice/map/chan/...)
+    # - for constants: const <name>
+    ignore-decls:
+      - c echo.Context
+      - c *gin.Context
+      - t testing.T
+      - f *foo.Bar
+      - e error
+      - i int
+      - j int
+      - const C
+      - T any
+      - m map[string]int
+      - db *gorm.DB
+      - j *JWT
+  revive:
+    ignore-generated-header: false
+    severity: warning
+    confidence: 0.8
+    rules:
+      - name: exported
+      - name: time-naming
+      - name: package-comments
+      - name: blank-imports
+      - name: file-header
+      - name: if-return
+      - name: increment-decrement
+      - name: var-naming # 校验变量名不是驼峰
+        severity: warning
+        disabled: false
+        arguments:
+          - ["ID"] # AllowList
+          - ["VM"] # DenyList
+          - - upperCaseConst: true
+      - name: var-declaration
+      - name: unexported-return
+      - name: indent-error-flow
+      - name: error-strings
+      - name: range
+      - name: superfluous-else
+      - name: bool-literal-in-expr
+
+  funlen:
+    # Checks the number of lines in a function.
+    # If lower than 0, disable the check.
+    # Default: 60
+    lines: 100
+    # Checks the number of statements in a function.
+    # If lower than 0, disable the check.
+    # Default: 40
+    statements: 40
+    # Ignore comments when counting lines.
+    # Default false
+    ignore-comments: true
+
+issues:
+  exclude-use-default: false
+  exclude-rules:
+    - path: _test\.go$
+      linters:
+        - all
+    - linters: [errcheck]
+      text: "Error return value of .((os\\.)?std(out|err)\\.Write|fmt\\.Fprint). is not checked"
+    - linters: ["revive", "goconst"]
+      path: .*_test\.go
+    - linters: ["varnamelen", "errcheck", "revive", "staticcheck"]
+      path: .*_test\.go
+  #new-from-rev: HEAD
+  #new-from-rev: f1093815799644c1d4c286bbc0e0123c280bd80f

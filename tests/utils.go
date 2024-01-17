@@ -31,6 +31,7 @@ import (
 	"gorm.io/gorm/utils"
 )
 
+// AssertObjEqual 断言等
 func AssertObjEqual(t *testing.T, r, e interface{}, names ...string) {
 	for _, name := range names {
 		got := reflect.Indirect(reflect.ValueOf(r)).FieldByName(name).Interface()
@@ -41,7 +42,8 @@ func AssertObjEqual(t *testing.T, r, e interface{}, names ...string) {
 	}
 }
 
-func AssertEqual(t *testing.T, got, expect interface{}) {
+// AssertEqual 断言等
+func AssertEqual(t *testing.T, got, expect interface{}) { //nolint: funlen,gocyclo
 	if !reflect.DeepEqual(got, expect) {
 		isEqual := func() {
 			if curTime, ok := got.(time.Time); ok {
@@ -136,12 +138,13 @@ func AssertEqual(t *testing.T, got, expect interface{}) {
 	}
 }
 
+// Now 获取当前时间
 func Now() *time.Time {
 	now := time.Now()
 	return &now
 }
 
-func buildSql(db *gorm.DB) string {
+func buildSQL(db *gorm.DB) string {
 	sql := db.Statement.SQL.String()
 	for _, value := range db.Statement.Vars {
 		sql = strings.Replace(sql, "?", convert(value), 1)

@@ -17,15 +17,15 @@
 
 package gplus
 
-type SqlSegment interface {
-	getSqlSegment() string
+type SQLSegment interface {
+	getSQLSegment() string
 }
 
 type columnPointer struct {
 	column any
 }
 
-func (cp *columnPointer) getSqlSegment() string {
+func (cp *columnPointer) getSQLSegment() string {
 	return getColumnName(cp.column)
 }
 
@@ -33,7 +33,7 @@ type sqlKeyword struct {
 	keyword string
 }
 
-func (sk *sqlKeyword) getSqlSegment() string {
+func (sk *sqlKeyword) getSQLSegment() string {
 	return sk.keyword
 }
 
@@ -41,6 +41,6 @@ type columnValue struct {
 	value any
 }
 
-func (cv *columnValue) getSqlSegment() string {
+func (cv *columnValue) getSQLSegment() string {
 	return ""
 }

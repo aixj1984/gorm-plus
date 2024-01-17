@@ -24,8 +24,11 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/aixj1984/gorm-plus/constants"
 )
 
+// Condition 条件结构体
 type Condition struct {
 	Group       string
 	ColumnName  string
@@ -57,6 +60,7 @@ var (
 	}
 )
 
+// BuildQuery  编译查询
 func BuildQuery[T any](queryParams url.Values) *QueryCond[T] {
 	columnCondMap, conditionMap, gcond := parseParams(queryParams)
 
@@ -93,21 +97,21 @@ func parseParams(queryParams url.Values) (map[string][]*Condition, map[string]st
 	conditionMap := make(map[string]string)
 	for key, values := range queryParams {
 		switch key {
-		case "q":
+		case "q": //nolint
 			columnCondMap = buildColumnCondMap(values)
-		case "sort":
+		case "sort": //nolint
 			if len(values) > 0 {
 				conditionMap["sort"] = values[len(values)-1]
 			}
-		case "select":
+		case "select": //nolint
 			if len(values) > 0 {
 				conditionMap["select"] = values[len(values)-1]
 			}
-		case "omit":
+		case "omit": //nolint
 			if len(values) > 0 {
 				conditionMap["omit"] = values[len(values)-1]
 			}
-		case "gcond":
+		case "gcond": //nolint
 			gcond = values[0]
 		}
 	}
@@ -327,10 +331,12 @@ func notLikeRight(query *QueryCond[any], name string, value any) {
 	query.NotLikeRight(name, convert(query.columnTypeMap, name, value))
 }
 
+// LikeLeft 左模糊 LIKE '%值'
 func LikeLeft(query *QueryCond[any], name string, value any) {
 	query.LikeLeft(name, convert(query.columnTypeMap, name, value))
 }
 
+// LikeRight 右模糊 LIKE '值%'
 func LikeRight(query *QueryCond[any], name string, value any) {
 	query.LikeRight(name, convert(query.columnTypeMap, name, value))
 }
@@ -376,7 +382,7 @@ func like(query *QueryCond[any], name string, value any) {
 }
 
 func ne(query *QueryCond[any], name string, value any) {
-	if strings.ToLower(fmt.Sprintf("%s", value)) == "null" {
+	if strings.ToLower(fmt.Sprintf("%s", value)) == constants.NullString {
 		query.IsNotNull(name)
 	} else {
 		query.Ne(name, convert(query.columnTypeMap, name, value))
@@ -392,7 +398,7 @@ func le(query *QueryCond[any], name string, value any) {
 }
 
 func eq(query *QueryCond[any], name string, value any) {
-	if strings.ToLower(fmt.Sprintf("%s", value)) == "null" {
+	if strings.ToLower(fmt.Sprintf("%s", value)) == constants.NullString {
 		query.IsNull(name)
 	} else {
 		query.Eq(name, convert(query.columnTypeMap, name, value))
