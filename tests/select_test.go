@@ -195,6 +195,14 @@ func TestSelectListNotBetween(t *testing.T) {
 	gplus.SelectList[User](query, gplus.Db(sessionDb))
 }
 
+func TestSelectEmpty(t *testing.T) {
+	expectSql := "SELECT * FROM `Users` WHERE username >= '' "
+	sessionDb := checkSelectSql(t, expectSql)
+	query, u := gplus.NewQuery[User]()
+	query.Ge(&u.Username, "")
+	gplus.SelectList[User](query, gplus.Db(sessionDb))
+}
+
 func TestSelectListAnd(t *testing.T) {
 	expectSql := "SELECT * FROM `Users` WHERE username = 'afumu' AND age = 20"
 	sessionDb := checkSelectSql(t, expectSql)

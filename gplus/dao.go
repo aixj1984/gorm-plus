@@ -19,6 +19,7 @@ package gplus
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -321,7 +322,7 @@ func SelectCount[T any](q *QueryCond[T], opts ...OptionFunc) (int64, *gorm.DB) {
 // Exists 根据条件判断记录是否存在
 func Exists[T any](q *QueryCond[T], opts ...OptionFunc) (bool, error) {
 	count, resultDb := SelectCount[T](q, opts...)
-	if resultDb.Error == gorm.ErrRecordNotFound {
+	if errors.Is(resultDb.Error, gorm.ErrRecordNotFound) {
 		return false, nil
 	}
 	return count > 0, resultDb.Error
@@ -393,6 +394,7 @@ func SelectGeneric[T any, R any](q *QueryCond[T], opts ...OptionFunc) (R, *gorm.
 	return entity, resultDb.Scan(&entity)
 }
 
+// Begin 起一个事务
 func Begin(opts ...*sql.TxOptions) *gorm.DB {
 	db := getDb()
 	return db.Begin(opts...)
@@ -498,8 +500,8 @@ func buildSqlAndArgs[T any](expressions []any, sqlBuilder *strings.Builder, quer
 				sqlBuilder.WriteString(segment.value.(string) + " ")
 				continue
 			}
-			if segment.value != "" {
-				sqlBuilder.WriteString("? ")
+			if segment.value != nil { // 条件可以给空字符串
+				sqlBuilder.WriteString("? ") //nolint
 				queryArgs = append(queryArgs, segment.value)
 			}
 		case *QueryCond[T]:

@@ -26,7 +26,7 @@ import (
 )
 
 func TestInsert1Name(t *testing.T) {
-	expectSql := "INSERT INTO `Users` (`username`,`password`,`address`,`age`,`phone`,`score`,`dept`) VALUES ('afumu','123456','',18,'',12,'研发部门')"
+	expectSql := "INSERT INTO `Users` (`username`,`password`,`address`,`age`,`phone`,`score`,`dept`) VALUES ('afumu','123456','',18,'',12,'研发部门') RETURNING `id`"
 	user := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	u := gplus.GetModel[User]()
 	sessionDb := checkInsertSql(t, expectSql)
@@ -34,7 +34,7 @@ func TestInsert1Name(t *testing.T) {
 }
 
 func TestInsert2Name(t *testing.T) {
-	expectSql := "INSERT INTO `Users` (`username`,`password`,`address`,`age`,`phone`,`score`) VALUES ('afumu','123456','',18,'',12)"
+	expectSql := "INSERT INTO `Users` (`username`,`password`,`address`,`age`,`phone`,`score`) VALUES ('afumu','123456','',18,'',12) RETURNING `id`"
 	user := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	u := gplus.GetModel[User]()
 	sessionDb := checkInsertSql(t, expectSql)
@@ -42,7 +42,7 @@ func TestInsert2Name(t *testing.T) {
 }
 
 func TestInsert3Name(t *testing.T) {
-	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456')"
+	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456') RETURNING `id`"
 	user := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	u := gplus.GetModel[User]()
 	sessionDb := checkInsertSql(t, expectSql)
@@ -50,7 +50,7 @@ func TestInsert3Name(t *testing.T) {
 }
 
 func TestInsertBatchName(t *testing.T) {
-	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456'),('afumu','123456')"
+	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456'),('afumu','123456') RETURNING `id`"
 	user := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	user2 := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	sessionDb := checkInsertSql(t, expectSql)
@@ -59,7 +59,7 @@ func TestInsertBatchName(t *testing.T) {
 }
 
 func TestInsertBatchSizeName(t *testing.T) {
-	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456'),('afumu','123456')"
+	expectSql := "INSERT INTO `Users` (`username`,`password`) VALUES ('afumu','123456'),('afumu','123456') RETURNING `id`"
 	user := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	user2 := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}
 	user3 := &User{Username: "afumu", Password: "123456", Age: 18, Score: 12, Dept: "研发部门"}

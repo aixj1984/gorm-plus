@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+// Package gplus is wrap for gorm
 package gplus
 
 import (

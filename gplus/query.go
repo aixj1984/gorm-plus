@@ -175,13 +175,13 @@ func (q *QueryCond[T]) NotLikeRight(column any, val any) *QueryCond[T] {
 
 // IsNull 是否为空 字段 IS NULL
 func (q *QueryCond[T]) IsNull(column any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.IsNull, "")...)
+	q.addExpression(q.buildSqlSegment(column, constants.IsNull, nil)...)
 	return q
 }
 
 // IsNotNull 是否非空 字段 IS NOT NULL
 func (q *QueryCond[T]) IsNotNull(column any) *QueryCond[T] {
-	q.addExpression(q.buildSqlSegment(column, constants.IsNotNull, "")...)
+	q.addExpression(q.buildSqlSegment(column, constants.IsNotNull, nil)...)
 	return q
 }
 

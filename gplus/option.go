@@ -19,6 +19,7 @@ package gplus
 
 import "gorm.io/gorm"
 
+// Option 是作为查询时单独传入参数的对象
 type Option struct {
 	Db          *gorm.DB
 	Selects     []any
@@ -26,6 +27,7 @@ type Option struct {
 	IgnoreTotal bool
 }
 
+// OptionFunc 是 option指令的函数
 type OptionFunc func(*Option)
 
 // Db 使用传入的Db对象
