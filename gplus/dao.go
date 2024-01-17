@@ -30,8 +30,10 @@ import (
 	"gorm.io/gorm/utils"
 )
 
-var globalDb *gorm.DB
-var defaultBatchSize = 1000
+var (
+	globalDb         *gorm.DB
+	defaultBatchSize = 1000
+)
 
 func Init(db *gorm.DB) {
 	globalDb = db
@@ -310,7 +312,7 @@ func SelectStreamingPage[T any, V Comparable](page *StreamingPage[T, V], q *Quer
 func SelectCount[T any](q *QueryCond[T], opts ...OptionFunc) (int64, *gorm.DB) {
 	var count int64
 	resultDb := buildCondition(q, opts...)
-	//fix 查询有设置Select并且数量只有一个且有设置别名,生成sql不对问题
+	// fix 查询有设置Select并且数量只有一个且有设置别名,生成sql不对问题
 	resultDb.Statement.Selects = nil
 	resultDb.Count(&count)
 	return count, resultDb
@@ -517,7 +519,7 @@ func buildSqlAndArgs[T any](expressions []any, sqlBuilder *strings.Builder, quer
 func getDb(opts ...OptionFunc) *gorm.DB {
 	option := getOption(opts)
 	// Clauses()目的是为了初始化Db，如果db已经被初始化了,会直接返回db
-	var db = globalDb.Clauses()
+	db := globalDb.Clauses()
 
 	if option.Db != nil {
 		db = option.Db.Clauses()

@@ -20,14 +20,15 @@ package tests
 import (
 	"errors"
 	"fmt"
-	"github.com/aixj1984/gorm-plus/gplus"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"reflect"
 	"sort"
 	"strconv"
 	"testing"
+
+	"github.com/aixj1984/gorm-plus/gplus"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var gormDb *gorm.DB
@@ -175,7 +176,6 @@ func TestUpdateById(t *testing.T) {
 		t.Fatalf("errors happened when SelectById: %v", db.Error)
 	}
 	AssertObjEqual(t, newUser, user, "ID", "Username", "Password", "Address", "Age", "Phone", "Score", "Dept", "CreatedAt", "UpdatedAt")
-
 }
 
 func TestUpdateZeroById(t *testing.T) {
@@ -194,7 +194,6 @@ func TestUpdateZeroById(t *testing.T) {
 		t.Fatalf("errors happened when SelectById: %v", db.Error)
 	}
 	AssertObjEqual(t, newUser, updateUser, "ID", "Username", "Password", "Address", "Age", "Phone", "Score", "Dept", "CreatedAt", "UpdatedAt")
-
 }
 
 func TestUpdate(t *testing.T) {
@@ -293,7 +292,6 @@ func TestSelectPage(t *testing.T) {
 
 	AssertObjEqual(t, resultPage.Records[0], users[0], "ID", "Username", "Password", "Address", "Age", "Phone", "Score", "Dept", "CreatedAt", "UpdatedAt")
 	AssertObjEqual(t, resultPage.Records[1], users[5], "ID", "Username", "Password", "Address", "Age", "Phone", "Score", "Dept", "CreatedAt", "UpdatedAt")
-
 }
 
 func TestSelectPageGeneric2(t *testing.T) {
@@ -321,7 +319,6 @@ func TestSelectPageGeneric2(t *testing.T) {
 
 	AssertObjEqual(t, resultPage.Records[0], users[0], "ID", "Username", "Password")
 	AssertObjEqual(t, resultPage.Records[1], users[5], "ID", "Username", "Password")
-
 }
 
 func TestSelectPageGeneric3(t *testing.T) {
@@ -349,7 +346,6 @@ func TestSelectPageGeneric3(t *testing.T) {
 
 	AssertObjEqual(t, userResult[0], users[0], "Username", "Password")
 	AssertObjEqual(t, userResult[1], users[5], "Username", "Password")
-
 }
 
 func TestSelectCount(t *testing.T) {
@@ -481,11 +477,11 @@ func TestSelectGeneric5(t *testing.T) {
 	gplus.InsertBatch[User](users)
 
 	var ages []int
-	var agesMap = make(map[int]struct{})
+	agesMap := make(map[int]struct{})
 	for _, user := range users {
 		agesMap[user.Age] = struct{}{}
 	}
-	for key, _ := range agesMap {
+	for key := range agesMap {
 		ages = append(ages, key)
 	}
 	sort.Ints(ages)
@@ -506,7 +502,7 @@ func TestSelectGeneric6(t *testing.T) {
 		Dept  string
 		Score int
 	}
-	var userMap = make(map[string]int)
+	userMap := make(map[string]int)
 	for _, user := range users {
 		userMap[user.Dept] += user.Score
 	}
@@ -531,7 +527,7 @@ func TestSelectGeneric7(t *testing.T) {
 	deleteOldData()
 	users := getUsers()
 	gplus.InsertBatch[User](users)
-	var userMap = make(map[string]int)
+	userMap := make(map[string]int)
 	for _, user := range users {
 		userMap[user.Dept] += user.Score
 	}
@@ -604,7 +600,6 @@ func TestPluck(t *testing.T) {
 		for _, item := range usernames {
 			fmt.Printf("pluck list %s\n", item)
 		}
-
 	}
 }
 
@@ -623,7 +618,6 @@ func TestPluckDistinct(t *testing.T) {
 		for _, item := range passwords {
 			fmt.Printf("pluck list %s\n", item)
 		}
-
 	}
 }
 
@@ -650,7 +644,6 @@ func TestReset(t *testing.T) {
 	if count != 1 {
 		t.Errorf("count expects: %v, got %v", 1, count)
 	}
-
 }
 
 func TestQueryBuilder(t *testing.T) {

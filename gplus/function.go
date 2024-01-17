@@ -18,8 +18,9 @@
 package gplus
 
 import (
-	"github.com/aixj1984/gorm-plus/constants"
 	"strings"
+
+	"github.com/aixj1984/gorm-plus/constants"
 )
 
 type Function struct {

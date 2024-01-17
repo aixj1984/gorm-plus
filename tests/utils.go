@@ -21,11 +21,12 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"go/ast"
-	"gorm.io/gorm"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"gorm.io/gorm"
 
 	"gorm.io/gorm/utils"
 )

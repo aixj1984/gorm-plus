@@ -18,26 +18,27 @@
 package tests
 
 import (
-	"github.com/aixj1984/gorm-plus/gplus"
-	"gorm.io/gorm"
 	"strings"
 	"testing"
+
+	"github.com/aixj1984/gorm-plus/gplus"
+	"gorm.io/gorm"
 )
 
 func TestDeleteByIdName(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE `id` = 1"
+	expectSql := "DELETE FROM `Users` WHERE `id` = 1"
 	sessionDb := checkDeleteSql(t, expectSql)
 	gplus.DeleteById[User](1, gplus.Db(sessionDb))
 }
 
 func TestDeleteByIdsName(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE `id` IN (1,2)"
+	expectSql := "DELETE FROM `Users` WHERE `id` IN (1,2)"
 	sessionDb := checkDeleteSql(t, expectSql)
 	gplus.DeleteById[User]([]int{1, 2}, gplus.Db(sessionDb))
 }
 
 func TestDeleteEq(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu'"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu")
@@ -45,7 +46,7 @@ func TestDeleteEq(t *testing.T) {
 }
 
 func TestDelete2Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu' OR username = 'afumu2'"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu' OR username = 'afumu2'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu").Or().Eq(&u.Username, "afumu2")
@@ -53,7 +54,7 @@ func TestDelete2Name(t *testing.T) {
 }
 
 func TestDelete3Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu' OR ( username = 'afumu2' AND score = 12 )"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu' OR ( username = 'afumu2' AND score = 12 )"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu").Or(func(q *gplus.QueryCond[User]) {
@@ -63,7 +64,7 @@ func TestDelete3Name(t *testing.T) {
 }
 
 func TestDelete4Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu' AND ( username = 'afumu2' AND score = 12 )"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu' AND ( username = 'afumu2' AND score = 12 )"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu").And(func(q *gplus.QueryCond[User]) {
@@ -73,7 +74,7 @@ func TestDelete4Name(t *testing.T) {
 }
 
 func TestDelete5Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu' OR username = 'afumu2'"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu' OR username = 'afumu2'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu").Or().Eq(&u.Username, "afumu2")
@@ -81,7 +82,7 @@ func TestDelete5Name(t *testing.T) {
 }
 
 func TestDelete6Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username = 'afumu' AND score = 60"
+	expectSql := "DELETE FROM `Users` WHERE username = 'afumu' AND score = 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Eq(&u.Username, "afumu").And().Eq(&u.Score, 60)
@@ -89,7 +90,7 @@ func TestDelete6Name(t *testing.T) {
 }
 
 func TestDelete7Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score > 60"
+	expectSql := "DELETE FROM `Users` WHERE score > 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Gt(&u.Score, 60)
@@ -97,7 +98,7 @@ func TestDelete7Name(t *testing.T) {
 }
 
 func TestDelete8Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score > 60"
+	expectSql := "DELETE FROM `Users` WHERE score > 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Gt(&u.Score, 60)
@@ -105,7 +106,7 @@ func TestDelete8Name(t *testing.T) {
 }
 
 func TestDelete9Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score >= 60"
+	expectSql := "DELETE FROM `Users` WHERE score >= 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Ge(&u.Score, 60)
@@ -113,7 +114,7 @@ func TestDelete9Name(t *testing.T) {
 }
 
 func TestDelete10Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score < 60"
+	expectSql := "DELETE FROM `Users` WHERE score < 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Lt(&u.Score, 60)
@@ -121,7 +122,7 @@ func TestDelete10Name(t *testing.T) {
 }
 
 func TestDelete11Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score <= 60"
+	expectSql := "DELETE FROM `Users` WHERE score <= 60"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Le(&u.Score, 60)
@@ -129,7 +130,7 @@ func TestDelete11Name(t *testing.T) {
 }
 
 func TestDelete12Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username LIKE '%zhang%'"
+	expectSql := "DELETE FROM `Users` WHERE username LIKE '%zhang%'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Like(&u.Username, "zhang")
@@ -137,7 +138,7 @@ func TestDelete12Name(t *testing.T) {
 }
 
 func TestDelete13Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username LIKE '%zhang'"
+	expectSql := "DELETE FROM `Users` WHERE username LIKE '%zhang'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.LikeLeft(&u.Username, "zhang")
@@ -145,7 +146,7 @@ func TestDelete13Name(t *testing.T) {
 }
 
 func TestDelete14Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username LIKE 'zhang%'"
+	expectSql := "DELETE FROM `Users` WHERE username LIKE 'zhang%'"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.LikeRight(&u.Username, "zhang")
@@ -153,7 +154,7 @@ func TestDelete14Name(t *testing.T) {
 }
 
 func TestDelete15Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username IS NULL"
+	expectSql := "DELETE FROM `Users` WHERE username IS NULL"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.IsNull(&u.Username)
@@ -161,7 +162,7 @@ func TestDelete15Name(t *testing.T) {
 }
 
 func TestDelete16Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username IS NOT NULL"
+	expectSql := "DELETE FROM `Users` WHERE username IS NOT NULL"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.IsNotNull(&u.Username)
@@ -169,7 +170,7 @@ func TestDelete16Name(t *testing.T) {
 }
 
 func TestDelete17Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username IN ('afumu','afumu2')"
+	expectSql := "DELETE FROM `Users` WHERE username IN ('afumu','afumu2')"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.In(&u.Username, []string{"afumu", "afumu2"})
@@ -177,7 +178,7 @@ func TestDelete17Name(t *testing.T) {
 }
 
 func TestDelete18Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE username NOT IN ('afumu','afumu2')"
+	expectSql := "DELETE FROM `Users` WHERE username NOT IN ('afumu','afumu2')"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.NotIn(&u.Username, []string{"afumu", "afumu2"})
@@ -185,7 +186,7 @@ func TestDelete18Name(t *testing.T) {
 }
 
 func TestDelete20Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score BETWEEN 60 AND 80"
+	expectSql := "DELETE FROM `Users` WHERE score BETWEEN 60 AND 80"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.Between(&u.Score, 60, 80)
@@ -193,7 +194,7 @@ func TestDelete20Name(t *testing.T) {
 }
 
 func TestDelete21Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score NOT BETWEEN 60 AND 80"
+	expectSql := "DELETE FROM `Users` WHERE score NOT BETWEEN 60 AND 80"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.NotBetween(&u.Score, 60, 80)
@@ -201,7 +202,7 @@ func TestDelete21Name(t *testing.T) {
 }
 
 func TestDelete22Name(t *testing.T) {
-	var expectSql = "DELETE FROM `Users` WHERE score NOT BETWEEN 60 AND 80"
+	expectSql := "DELETE FROM `Users` WHERE score NOT BETWEEN 60 AND 80"
 	sessionDb := checkDeleteSql(t, expectSql)
 	query, u := gplus.NewQuery[User]()
 	query.NotBetween(&u.Score, 60, 80)

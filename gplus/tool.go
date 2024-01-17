@@ -35,28 +35,29 @@ type Condition struct {
 
 var columnTypeCache sync.Map
 
-var operators = []string{"!~<=", "!~>=", "~<=", "~>=", "!?=", "!^=", "!~=", "?=", "^=", "~=", "!=", ">=", "<=", "=", ">", "<"}
-var builders = map[string]func(query *QueryCond[any], name string, value any){
-	"!~<=": notLikeLeft,
-	"!~>=": notLikeRight,
-	"~<=":  LikeLeft,
-	"~>=":  LikeRight,
-	"!?=":  notIn,
-	"!^=":  notBetween,
-	"!~=":  notLike,
-	"?=":   in,
-	"^=":   between,
-	"~=":   like,
-	"!=":   ne,
-	">=":   ge,
-	"<=":   le,
-	"=":    eq,
-	">":    gt,
-	"<":    lt,
-}
+var (
+	operators = []string{"!~<=", "!~>=", "~<=", "~>=", "!?=", "!^=", "!~=", "?=", "^=", "~=", "!=", ">=", "<=", "=", ">", "<"}
+	builders  = map[string]func(query *QueryCond[any], name string, value any){
+		"!~<=": notLikeLeft,
+		"!~>=": notLikeRight,
+		"~<=":  LikeLeft,
+		"~>=":  LikeRight,
+		"!?=":  notIn,
+		"!^=":  notBetween,
+		"!~=":  notLike,
+		"?=":   in,
+		"^=":   between,
+		"~=":   like,
+		"!=":   ne,
+		">=":   ge,
+		"<=":   le,
+		"=":    eq,
+		">":    gt,
+		"<":    lt,
+	}
+)
 
 func BuildQuery[T any](queryParams url.Values) *QueryCond[T] {
-
 	columnCondMap, conditionMap, gcond := parseParams(queryParams)
 
 	parentQuery := buildParentQuery[T](conditionMap)
@@ -88,8 +89,8 @@ func BuildQuery[T any](queryParams url.Values) *QueryCond[T] {
 
 func parseParams(queryParams url.Values) (map[string][]*Condition, map[string]string, string) {
 	var gcond string
-	var columnCondMap = make(map[string][]*Condition)
-	var conditionMap = make(map[string]string)
+	columnCondMap := make(map[string][]*Condition)
+	conditionMap := make(map[string]string)
 	for key, values := range queryParams {
 		switch key {
 		case "q":
@@ -115,7 +116,7 @@ func parseParams(queryParams url.Values) (map[string][]*Condition, map[string]st
 
 // buildColumnCondMap 根据url参数构建字段条件
 func buildColumnCondMap(values []string) map[string][]*Condition {
-	var maps = make(map[string][]*Condition)
+	maps := make(map[string][]*Condition)
 	for _, value := range values {
 		currentOperator := getCurrentOp(value)
 		params := strings.SplitN(value, currentOperator, 2)
@@ -160,7 +161,7 @@ func getCurrentOp(value string) string {
 }
 
 func buildQueryCondMap[T any](columnCondMap map[string][]*Condition) map[string]*QueryCond[T] {
-	var queryCondMap = make(map[string]*QueryCond[T])
+	queryCondMap := make(map[string]*QueryCond[T])
 	columnTypeMap := getColumnTypeMap[T]()
 	for key, conditions := range columnCondMap {
 		query := &QueryCond[any]{}
@@ -280,7 +281,7 @@ func getColumnTypeMap[T any]() map[string]reflect.Type {
 			return columnNameMap
 		}
 	}
-	var columnTypeMap = make(map[string]reflect.Type)
+	columnTypeMap := make(map[string]reflect.Type)
 	typeOf := reflect.TypeOf((*T)(nil)).Elem()
 	for i := 0; i < typeOf.NumField(); i++ {
 		field := typeOf.Field(i)

@@ -18,9 +18,10 @@
 package gplus
 
 import (
-	"gorm.io/gorm/schema"
 	"reflect"
 	"sync"
+
+	"gorm.io/gorm/schema"
 )
 
 // 缓存项目中所有实体字段名，储存格式：key为字段指针值，value为字段名
@@ -44,7 +45,7 @@ func Cache(models ...any) {
 }
 
 func getColumnNameMap(model any) map[uintptr]string {
-	var columnNameMap = make(map[uintptr]string)
+	columnNameMap := make(map[uintptr]string)
 	valueOf := reflect.ValueOf(model).Elem()
 	typeOf := reflect.TypeOf(model).Elem()
 	for i := 0; i < valueOf.NumField(); i++ {
